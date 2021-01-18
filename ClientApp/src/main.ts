@@ -5,7 +5,7 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
-  return 'http://shanes-simpleapi-dev.us-west-2.elasticbeanstalk.com/';
+  return 'https://api.soinshane.com/';
 }
 
 const providers = [
