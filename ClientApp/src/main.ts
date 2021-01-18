@@ -5,7 +5,9 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
-  return 'https://api.soinshane.com/';
+  //return 'https://api.soinshane.com/';
+  //return 'https://localhost:44341/';
+  return document.getElementsByTagName('base')[0].href;
 }
 
 const providers = [

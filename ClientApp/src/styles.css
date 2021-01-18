@@ -213,3 +213,35 @@ body > .container{
   margin-bottom: 20em;
   padding-bottom: 20em;
 }
+
+li.nav-item > a.nav-link, app-login-menu li.nav-item > a.nav-link{
+  font-size:22px;
+}
+
+.nav-bar li:hover, .nav-bar li:active, 
+app-login-menu li .nav-bar li:hover ,app-login-menu li .nav-bar li:active {
+  text-decoration: #05E6F2 underline 3px solid;
+  text-underline-offset: .4em;
+}
+
+li a.nav-link:hover, li a.nav-link:active, 
+app-login-menu .nav-link:hover, app-login-menu .nav-link:active{
+  text-decoration: #05E6F2 underline 3px solid;
+  text-underline-offset: .4em;
+}
+
+li a.nav-link i.icon:hover, li a.nav-link i.icon:active{
+  text-decoration: #05E6F2 underline 1px solid;
+  text-underline-offset: .25em;
+}
+
+a.nav-link > i.icon {
+  text-decoration: #026267 underline 1px solid;
+  text-underline-offset: .25em;
+}
+
+
+li.link-active a i.icon {
+  text-decoration: #026267 underline 1em solid;
+  text-underline-offset: .25em;
+}
