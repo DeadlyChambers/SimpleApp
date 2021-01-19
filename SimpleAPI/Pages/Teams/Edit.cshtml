@@ -1,0 +1,55 @@
+﻿@page
+@model SimpleAPI.Pages.Teams.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Team</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Team.Id" />
+            <div class="form-group">
+                <label asp-for="Team.Name" class="control-label"></label>
+                <input asp-for="Team.Name" class="form-control" />
+                <span asp-validation-for="Team.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Team.Conference" class="control-label"></label>
+                <select asp-for="Team.Conference" class="form-control" asp-items="Html.GetEnumSelectList<SimpleAPI.Common.Enums.TeamConferences>()">
+                    <option value="">Select One</option>
+                </select>
+                <span asp-validation-for="Team.Conference" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Team.Division" class="control-label"></label>
+                <select  asp-for="Team.Division" class="form-control" asp-items="Html.GetEnumSelectList<SimpleAPI.Common.Enums.TeamDivisions>()">
+                    <option value="">Select One</option>
+                </select>
+                <span asp-validation-for="Team.Division" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Team.Location" class="control-label"></label>
+                <input asp-for="Team.Location" class="form-control" />
+                <span asp-validation-for="Team.Location" class="text-danger"></span>
+            </div>
+         
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

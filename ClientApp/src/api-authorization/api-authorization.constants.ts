@@ -1,6 +1,15 @@
+import { UrlSegment } from "@angular/router";
+
 export const ApplicationName = 'SimpleAPI';
 
 export const ReturnUrlType = 'returnUrl';
+
+export const BrowserUrl =
+{ Contains :['authentication', 'counter', 'fetch-data'], Url: 'https://localhost:4200/'};
+export const WebsiteApiUrl = 
+{ Contains :['Account', 'Identity','Teams'], Url:'https://localhost:44341/'};
+
+export const ExternalApiUrl = 'https://localhost:44341/';
 
 export const QueryParameterNames = {
   ReturnUrl: ReturnUrlType,
@@ -22,7 +31,7 @@ export const LoginActions = {
 };
 
 let applicationPaths: ApplicationPathsType = {
-  DefaultLoginRedirectPath: '/',
+  DefaultLoginRedirectPath:'/', //: WebsiteApiUrl.Url,
   ApiAuthorizationClientConfigurationUrl: `_configuration/${ApplicationName}`,
   Login: `authentication/${LoginActions.Login}`,
   LoginFailed: `authentication/${LoginActions.LoginFailed}`,
@@ -52,8 +61,11 @@ applicationPaths = {
   ProfilePathComponents: applicationPaths.Profile.split('/'),
   LogOutPathComponents: applicationPaths.LogOut.split('/'),
   LoggedOutPathComponents: applicationPaths.LoggedOut.split('/'),
-  LogOutCallbackPathComponents: applicationPaths.LogOutCallback.split('/')
+  LogOutCallbackPathComponents: applicationPaths.LogOutCallback.split('/'),
+  ApiAuthorizationClientConfigurationUrl: BrowserUrl.Url
 };
+
+
 
 interface ApplicationPathsType {
   readonly DefaultLoginRedirectPath: string;

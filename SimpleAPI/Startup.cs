@@ -2,18 +2,18 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SimpleAPI.Business.Managers;
 using SimpleAPI.Data;
 using SimpleAPI.DataAccess;
 using SimpleAPI.DataAccess.Configuration;
+using SimpleAPI.DTO;
 using SimpleAPI.DTO.Profiles;
 using System;
 using System.Linq;
@@ -39,6 +39,11 @@ namespace SimpleAPI
                 //autoMapper.UseEntityFrameworkCoreModel(serviceProvider);
             }, AppDomain.CurrentDomain.GetAssemblies());
 
+            services.AddRazorPages().AddRazorPagesOptions(options =>
+            {
+                AddPageSpecificAuth(options);
+            });
+
             var conn = Environment.ExpandEnvironmentVariables(Configuration["Data:DefaultConnection"]);
 
             //services.AddControllers();
@@ -46,7 +51,8 @@ namespace SimpleAPI
             {
                 options.AddPolicy(
                    name: "AllowOrigin",
-                   builder => {
+                   builder =>
+                   {
                        builder.AllowAnyOrigin()
                       .AllowAnyMethod()
                       .AllowAnyHeader();
@@ -59,17 +65,17 @@ namespace SimpleAPI
                 return new StartupLogger(service);
             });
             var logger = services.BuildServiceProvider().GetRequiredService<StartupLogger>();
-     //       HandleApplicationVersioning(logger);
+            HandleApplicationVersioning(logger);
 
             logger.Log($"In startup the connstring is {conn}");
             ConnectionString = conn;
             _ = services.AddDbContext<FootballContext>(options =>
                 options.UseNpgsql(conn));
 
-            _ =  services.AddDbContext<IdentityContext>(options =>
-                    options.UseNpgsql(conn));
-            
-          services.AddDatabaseDeveloperPageExceptionFilter();
+            _ = services.AddDbContext<IdentityContext>(options =>
+                   options.UseNpgsql(conn));
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<SCCUser>(options => options.SignIn.RequireConfirmedAccount = true)
                .AddEntityFrameworkStores<IdentityContext>();
@@ -82,41 +88,10 @@ namespace SimpleAPI
             services.AddControllersWithViews();
             services.AddRazorPages();
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "../ClientApp/dist";
-            });
-
-            //   services.AddIdentityServer()
-            //.AddApiAuthorization<SCCUser, IdentityContext>();
-            //services.AddIdentity<SCCUser, IdentityRole>(options =>
-            //{
-            //    options.SignIn.RequireConfirmedAccount = true;
-            //    options.Password.RequireDigit = false;
-            //    options.Password.RequireLowercase = false;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //}).AddDefaultTokenProviders()
-            //.AddDefaultUI()
-            //.AddEntityFrameworkStores<IdentityContext>();
-
-            //services.AddDatabaseDeveloperPageExceptionFilter();
-
-            //services.AddIdentityCore
-            //.AddApiAuthorization<SCCUser, IdentityContext>();
-
-
-            //services.AddAuthorization();
-
-            //services.AddAuthentication().AddIdentityServerJwt();
-            //services.AddControllersWithViews();
-            //services.AddRazorPages();
-            //// In production, the Angular files will be served from this directory
             //services.AddSpaStaticFiles(configuration =>
             //{
-            //    configuration.RootPath = "ClientApp/dist";
+            //    configuration.RootPath = "../ClientApp/dist";
             //});
-
-
 
             ConfigureDI(services);
         }
@@ -126,7 +101,7 @@ namespace SimpleAPI
         {
             if (env.IsDevelopment())
             {
-              app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
 
                 app.UseMigrationsEndPoint();
             }
@@ -137,7 +112,7 @@ namespace SimpleAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-        
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -150,8 +125,8 @@ namespace SimpleAPI
 
             app.UseAuthentication();
 
-          app.UseIdentityServer();
-            
+            app.UseIdentityServer();
+
             app.UseAuthorization();
 
             app.UseCors("AllowOrigin");
@@ -163,10 +138,11 @@ namespace SimpleAPI
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+              
             });
 
             app.UseSpa(spa =>
@@ -178,12 +154,13 @@ namespace SimpleAPI
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
+                    //Uncomment if you want to run website and api at the same time. 
+                  //  spa.UseAngularCliServer(npmScript: "start");
                 }
             });
         }
 
-       
+
 
         /// <summary>
         /// Silly method to help display Build Version, Deploy Version, and App Version that
@@ -218,18 +195,40 @@ namespace SimpleAPI
         }
 
         /// <summary>
+        /// Set the individual page, folders, or areas to have policies enforced for Auth
+        /// </summary>
+        /// <param name="options"></param>
+        public void AddPageSpecificAuth(RazorPagesOptions options)
+        {
+            ////Admin can delete and edit
+            //options.Conventions.AuthorizePage("/Teams/Delete", SCCPolicies.Updaters);
+            //options.Conventions.AuthorizePage("/Teams/Edit", SCCPolicies.Updaters);
+            ////Trusted can create
+            //options.Conventions.AuthorizePage("/Teams/Create", SCCPolicies.Creators);
+            ////Account can view
+            //options.Conventions.AuthorizePage("/Teams/Details", SCCPolicies.Readers);
+            //Anonymous can view all indexes
+            //options.Conventions.AllowAnonymousToPage("~/Index");
+            //Execpt stats
+
+            options.Conventions.AllowAnonymousToAreaPage("Identity", "/Account/AccessDenied");
+        }
+
+
+
+        /// <summary>
         /// Setup the various custom DI impleminations/interfaces
         /// </summary>
         /// <param name="services"></param>
         private void ConfigureDI(IServiceCollection services)
         {
-            //services.AddTransient<IEntitiesManager<TeamDto>, BasicEntitiesManager<TeamDto>>();
-            //services.AddTransient<IEntitiesManager<PlayerDto>, BasicEntitiesManager<PlayerDto>>();
-            //services.AddTransient<IEntitiesManager<GameDto>, BasicEntitiesManager<GameDto>>();
-            //services.AddTransient<IMultiEntitiesManager<StatDto>, StatsManager<StatDto>>();
+            services.AddTransient<IEntitiesManager<TeamDto>, BasicEntitiesManager<TeamDto>>();
+            services.AddTransient<IEntitiesManager<PlayerDto>, BasicEntitiesManager<PlayerDto>>();
+            services.AddTransient<IEntitiesManager<GameDto>, BasicEntitiesManager<GameDto>>();
+            services.AddTransient<IMultiEntitiesManager<StatDto>, StatsManager<StatDto>>();
         }
 
-        
+
     }
 
     /// <summary>
