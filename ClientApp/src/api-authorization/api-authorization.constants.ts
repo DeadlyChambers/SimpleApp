@@ -5,11 +5,11 @@ export const ApplicationName = 'SimpleAPI';
 export const ReturnUrlType = 'returnUrl';
 
 export const BrowserUrl =
-{ Contains :['authentication', 'counter', 'fetch-data'], Url: 'https://localhost:4200/'};
+{ Contains :['authentication', 'counter', 'fetch-data'], Url: 'http://localhost:4200/'};
 export const WebsiteApiUrl = 
-{ Contains :['Account', 'Identity','Teams'], Url:'https://localhost:44341/'};
+{ Contains :['Account', 'Identity','Teams'], Url:'http://localhost:44341/'};
 
-export const ExternalApiUrl = 'https://localhost:44341/';
+export const ExternalApiUrl = 'http://localhost:44341/';
 
 export const QueryParameterNames = {
   ReturnUrl: ReturnUrlType,

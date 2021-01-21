@@ -1,5 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
 
+
+@font-face {
+  font-family: "bootstrap-icons";
+  src: url("./assets/fonts/bootstrap-icons.woff2?822229ccf0ef0abe3670436018962f03") format("woff2"),
+url("./assets/fonts/bootstrap-icons.woff?822229ccf0ef0abe3670436018962f03") format("woff");
+}
+
+[class^="bi-"]::before,
+[class*=" bi-"]::before,
+[class^="ai-"]::after,
+[class*=" ai-"]::after {
+  display: inline-block;
+  font-family: bootstrap-icons !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: text-bottom;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bi-chevron-left::before { content: "\f101"; }
+.bi-chevron-right::before { content: "\f102"; }
+.ai-chevron-right::after { content: "\f102"; }
+
+.bi-pencil-fill::before { content: "\f103"; }
+.bi-pencil::before { content: "\f104"; }
+.bi-person-circle::before { content: "\f105"; }
+.bi-plus-circle::before { content: "\f106"; }
+.bi-x-circle::before { content: "\f107"; }
+
 /* Provide sufficient contrast against white background */
 a {
   color: 
@@ -230,18 +263,33 @@ app-login-menu .nav-link:hover, app-login-menu .nav-link:active{
   text-underline-offset: .4em;
 }
 
-li a.nav-link i.icon:hover, li a.nav-link i.icon:active{
+li a.nav-link div.icon:hover, li a.nav-link div.icon:active{
   text-decoration: #05E6F2 underline 1px solid;
   text-underline-offset: .25em;
 }
 
-a.nav-link > i.icon {
+a.nav-link > div.icon {
   text-decoration: #026267 underline 1px solid;
   text-underline-offset: .25em;
 }
 
 
-li.link-active a i.icon {
+li.link-active a div.icon {
   text-decoration: #026267 underline 1em solid;
   text-underline-offset: .25em;
 }
+
+
+div.icon > i {
+  color: #026267;
+  font-size: 24px;
+  cursor: pointer;
+}
+div.icon > i:hover {
+  color:  #05E6F2 ; 
+}
+
+div.icon > i.red-c:hover {
+  color:  #F01105; 
+}
+

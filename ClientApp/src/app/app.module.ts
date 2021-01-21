@@ -27,17 +27,19 @@ import { TeamsComponent } from './teams/teams.component';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-	ApiAuthorizationModule,
+	// ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'teams', component: TeamsComponent },
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard]  }
+      { path: 'fetch-data', component: FetchDataComponent} //, canActivate: [AuthorizeGuard]  }
     ])
   ],
-  providers: [
-   { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true 
-   }],
+  providers: []
+  //  { 
+  //    provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true 
+  //  }]
+   ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

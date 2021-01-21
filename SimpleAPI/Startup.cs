@@ -39,14 +39,14 @@ namespace SimpleAPI
                 //autoMapper.UseEntityFrameworkCoreModel(serviceProvider);
             }, AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddRazorPages().AddRazorPagesOptions(options =>
-            {
-                AddPageSpecificAuth(options);
-            });
+            //services.AddRazorPages().AddRazorPagesOptions(options =>
+            //{
+            //    AddPageSpecificAuth(options);
+            //});
 
             var conn = Environment.ExpandEnvironmentVariables(Configuration["Data:DefaultConnection"]);
 
-            //services.AddControllers();
+            services.AddControllers();
             services.AddCors(options =>
             {
                 options.AddPolicy(
@@ -75,7 +75,7 @@ namespace SimpleAPI
             _ = services.AddDbContext<IdentityContext>(options =>
                    options.UseNpgsql(conn));
 
-            services.AddDatabaseDeveloperPageExceptionFilter();
+           // services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<SCCUser>(options => options.SignIn.RequireConfirmedAccount = true)
                .AddEntityFrameworkStores<IdentityContext>();
@@ -85,8 +85,8 @@ namespace SimpleAPI
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
+         //   services.AddControllersWithViews();
+        //    services.AddRazorPages();
             // In production, the Angular files will be served from this directory
             //services.AddSpaStaticFiles(configuration =>
             //{
@@ -118,7 +118,7 @@ namespace SimpleAPI
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
-                app.UseSpaStaticFiles();
+         //       app.UseSpaStaticFiles();
             }
 
             app.UseRouting();
@@ -131,33 +131,33 @@ namespace SimpleAPI
 
             app.UseCors("AllowOrigin");
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //});
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
-              
+                endpoints.MapControllers();
             });
 
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+            //app.UseEndpoints(endpoints =>
+            //{
+            //   endpoints.MapRazorPages();
+            //    endpoints.MapControllerRoute(
+            //        name: "default",
+            //        pattern: "{controller}/{action=Index}/{id?}");
 
-                spa.Options.SourcePath = "../ClientApp";
+            //});
 
-                if (env.IsDevelopment())
-                {
-                    //Uncomment if you want to run website and api at the same time. 
-                  //  spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
+            //app.UseSpa(spa =>
+            //{
+            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+            //    // see https://go.microsoft.com/fwlink/?linkid=864501
+
+            //    spa.Options.SourcePath = "../ClientApp";
+
+            //    if (env.IsDevelopment())
+            //    {
+            //        //Uncomment if you want to run website and api at the same time. 
+            //      //  spa.UseAngularCliServer(npmScript: "start");
+            //    }
+            //});
         }
 
 

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>bootstrap-icons</title>
+
+  <style>
+    .icons {
+      display: grid;
+      max-width: 100%;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr) );
+      gap: 1.25rem;
+    }
+    .icon {
+      background-color: var(--bs-light);
+      border-radius: .25rem;
+    }
+    .bi {
+      margin: .25rem;
+      font-size: 2.5rem;
+    }
+    .label {
+      font-family: var(--bs-font-monospace);
+    }
+    .label {
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      padding: .25rem;
+      font-size: .625rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    @font-face {
+  font-family: "bootstrap-icons";
+  src: url("./assets/fonts/bootstrap-icons.woff2?822229ccf0ef0abe3670436018962f03") format("woff2"),
+url("./assets/fonts/bootstrap-icons.woff?822229ccf0ef0abe3670436018962f03") format("woff");
+}
+
+[class^="bi-"]::before,
+[class*=" bi-"]::before {
+  display: inline-block;
+  font-family: bootstrap-icons !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: text-bottom;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bi-chevron-left::before { content: "\f101"; }
+.bi-chevron-right::before { content: "\f102"; }
+.bi-pencil-fill::before { content: "\f103"; }
+.bi-pencil::before { content: "\f104"; }
+.bi-person-circle::before { content: "\f105"; }
+.bi-plus-circle::before { content: "\f106"; }
+.bi-x-circle::before { content: "\f107"; }
+
+  </style>
+
+<link rel="icon" type="image/x-icon" href="./src/assets/favicon.ico" />
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body class="text-center">
+
+  <h1>bootstrap-icons</h1>
+
+  <div class="icons">
+    <div class="icon">
+      <i class="bi bi-chevron-left"></i>
+      <div class="label">chevron-left</div>
+    </div>
+    <div class="icon">
+      <i class="bi bi-chevron-right"></i>
+      <div class="label">chevron-right</div>
+    </div>
+    <div class="icon">
+      <i class="bi bi-pencil-fill"></i>
+      <div class="label">pencil-fill</div>
+    </div>
+    <div class="icon">
+      <i class="bi bi-pencil"></i>
+      <div class="label">pencil</div>
+    </div>
+    <div class="icon">
+      <i class="bi bi-person-circle"></i>
+      <div class="label">person-circle</div>
+    </div>
+    <div class="icon">
+      <i class="bi bi-plus-circle"></i>
+      <div class="label">plus-circle</div>
+    </div>
+    <div class="icon">
+      <i class="bi bi-x-circle"></i>
+      <div class="label">x-circle</div>
+    </div>
+  </div>
+
+</body>
+</html>

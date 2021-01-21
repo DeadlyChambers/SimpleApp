@@ -2,53 +2,90 @@
 
 <p>Simple Crud to verify the Db works properly</p>
 
-<p *ngIf="!teams"><em>Loading...</em></p>
-
-<table class='table table-striped table-container' aria-labelledby="tableLabel" *ngIf="teams">
-  <thead>
-    <tr>
-      <th>Team ID</th>
-      <th>Name</th>
-      <th>Location</th>
-      <th>Conf.</th>
-      <th>Division</th>
-      <th>Create Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let team of teams">
-      <td>{{ team.teamid }}</td>
-      <td>{{ team.name }}</td>
-      <td>{{ team.location }}</td>
-      <td>{{ team.conference }}</td>
-      <td>{{ team.division }}</td>
-      <td>{{ team.createdate | date: 'MM/dd/yyyy'}}</td>
-    </tr>
-  </tbody>
-</table>
-
 <style>
-  .form-container input, .form-container select{
+  .form-container input,
+  .form-container select {
     margin: 10px;
   }
 </style>
 
-<div class="form-container">
+<div class="row row-cols-auto g-3 align-items-center">
+  <div class="col-md-2 col-sm-6 pb-2">
+    <input [(ngModel)]="createTeam.name" class="form-control" type="text" placeholder="Name"
+      aria-label="default input">
+  </div>
+  <div class="col-md-2 col-sm-6 pb-2">
+    <input [(ngModel)]="createTeam.location" class="form-control" type="text" placeholder="City"
+      aria-label="default input">
+  </div>
+  <!-- <input [(ngModel)]="createTeam.createdDate" class="form-control" type="date" placeholder="Date" aria-label="default input example"> -->
 
-  <input [(ngModel)]="createTeam.name" class="form-control" type="text" placeholder="Name" aria-label="default input example">
-  <input [(ngModel)]="createTeam.location" class="form-control" type="text" placeholder="City" aria-label="default input example">
-  <input [(ngModel)]="createTeam.createdDate" class="form-control" type="date" placeholder="Date" aria-label="default input example">
-
-  <h1>Conference</h1>
-<select class="form-control"  [(ngModel)]="createTeam.conference">
-  <option *ngFor="let c of conferences" [ngValue]="c.id">{{c.name}}</option>
-</select>
-  
-  <h1>Division</h1>
-  <select class="form-control"  [(ngModel)]="createTeam.division">
-    <option *ngFor="let c of divisions" [ngValue]="c.id">{{c.name}}</option>
-  </select>
-  
-
-<button class="btn btn-primary" (click)="create()">Create It</button>
+  <div class="col-md-2 col-sm-4 pb-2">
+    <select [(ngModel)]="createTeam.conference" class="form-control form-select-sm"
+      aria-label=".form-select-sm">
+      <option *ngFor="let c of conferences" [ngValue]="c.id">{{c.name}}</option>
+    </select>
+  </div>
+  <div class="col-md-2 col-sm-4 pb-2">
+    <select [(ngModel)]="createTeam.division" class="form-control form-select-sm" 
+    aria-label=".form-select-sm">
+     
+      <option *ngFor="let c of divisions" [ngValue]="c.id">{{c.name}}</option>
+    </select>
+  </div>
+  <div class="col-md-2 col-sm-4 pb-2">
+    <button class="btn btn-primary" (click)="create()">Create</button>
+  </div>
 </div>
+
+<p *ngIf="!teams"><em>Loading...</em></p>
+<p *ngIf="teams">There are currently {{pagedRecords.totalRecords}} teams </p>
+<table class='table table-striped table-container' aria-labelledby="tableLabel" *ngIf="teams">
+  <thead>
+    <tr>
+      <!-- <th>Team ID</th> -->
+      <th>Name</th>
+      <th>Location</th>
+      <th>Conference</th>
+      <th>Division</th>
+      <th></th>
+      <!-- <th>Create Date</th> -->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let team of teams">
+      <!-- <td>{{ team.teamid }}</td> -->
+      <td>{{ team.name }}</td>
+      <td>{{ team.location  }}</td>
+      <td>{{ getConf(team.conference) }}</td>
+      <td>{{ getDivis(team.division) }}</td>
+      <td>
+        <div class="icon">
+          <i (click)="deleteRow(team.id)" class="bi bi-x-circle red-c"></i>
+        </div>
+      <!-- <td>{{ team.createdate | date: 'MM/dd/yyyy'}}</td> -->
+    </tr>
+  </tbody>
+  <tfoot>
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <div class="icon">
+          <i class="bi bi-chevron-left" [ngClass]="{'disabled': !pagedRecords.hasPreviousPage ===false }" (click)="clickprev()"
+          >Previous</i>
+        </div>
+      </li>
+      <li>
+        <h3 style="margin: 0 .5em">{{pagedRecords.currentPage}}</h3>
+      </li>
+      <li class="nav-item">
+  
+        <div class="icon">
+          <i class="ai ai-chevron-right" [ngClass]="{'disabled': pagedRecords.hasNextPage ===false }" (click)="clicknext()"
+          >Next</i>
+        </div>
+              
+      </li>
+    </ul>
+ 
+  </tfoot>
+</table>
