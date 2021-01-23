@@ -30,12 +30,12 @@ public divisions = [
   
 
   public clickprev(){
-    if(this.pagedRecords.hasNextPage)
+    if(this.pagedRecords.hasPreviousPage)
       this.load(this.pagedRecords.currentPage - 1);
   }
   
   public clicknext(){
-    if(this.pagedRecords.hasPreviousPage)
+    if(this.pagedRecords.hasNextPage)
       this.load(this.pagedRecords.currentPage + 1);
   }
 
@@ -46,6 +46,10 @@ public create(){
 }
 
 public load(pageId: number){
+  if(pageId == 0) {
+    pageId = 1;
+  }
+  
   this.httpClient.get<PageList>(this.apiUrl + 'teams?id='+pageId).subscribe(result => {
     this.pagedRecords = result;
       this.teams = result.items;
@@ -53,9 +57,13 @@ public load(pageId: number){
 }
 
   public deleteRow(id: number){
-    this.httpClient.delete(this.apiUrl+'teams/'+id).subscribe(result => {
+    this.httpClient.delete(this.apiUrl+'teams?id='+id).subscribe(result => {
         const index = this.teams.findIndex(team => team.id === id);
         this.teams.slice(index, 1);
+        this.pagedRecords.totalRecords--;
+        if(this.pagedRecords.totalRecords % this.pagedRecords.pageSize === 0) {
+            this.clickprev();
+        }        
     }, error => console.error(error));
   }
 

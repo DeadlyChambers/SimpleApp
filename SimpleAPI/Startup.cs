@@ -44,7 +44,7 @@ namespace SimpleAPI
             //    AddPageSpecificAuth(options);
             //});
 
-            var conn = Environment.ExpandEnvironmentVariables(Configuration["Data:DefaultConnection"]);
+            var conn =  Environment.ExpandEnvironmentVariables(Configuration["Data:DefaultConnection"]);
 
             services.AddControllers();
             services.AddCors(options =>

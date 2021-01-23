@@ -288,6 +288,10 @@ div.icon > i {
 div.icon > i:hover {
   color:  #05E6F2 ; 
 }
+div.icon > i.disabled:hover {
+  color:026267;
+  cursor: none;
+}
 
 div.icon > i.red-c:hover {
   color:  #F01105; 
