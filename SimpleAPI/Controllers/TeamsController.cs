@@ -43,8 +43,8 @@ namespace SimpleAPI.Controllers
             return (await _teamsManager.AddAsync(team));
         }
 
-        [HttpDelete]
-        public async Task Delete([FromQuery]int id)
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
         {
             await _teamsManager.DeleteAsync(id);
         }

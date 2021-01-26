@@ -42,6 +42,7 @@ public divisions = [
 public create(){
    this.httpClient.post<ITeam>(this.apiUrl + 'teams', this.createTeam).subscribe(result =>  {
       this.teams.push(result)
+      this.pagedRecords.totalRecords++;
    }, error => console.error(error));
 }
 
@@ -57,7 +58,7 @@ public load(pageId: number){
 }
 
   public deleteRow(id: number){
-    this.httpClient.delete(this.apiUrl+'teams?id='+id).subscribe(result => {
+    this.httpClient.delete(this.apiUrl+'teams/'+id).subscribe(result => {
         const index = this.teams.findIndex(team => team.id === id);
         this.teams.slice(index, 1);
         this.pagedRecords.totalRecords--;
