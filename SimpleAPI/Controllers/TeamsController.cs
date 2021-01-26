@@ -29,11 +29,11 @@ namespace SimpleAPI.Controllers
         //}
 
         [HttpGet]
-        public async Task<PagedList<TeamDto>> Get([FromQuery]int id)
-        {
+        public async Task<PagedList<TeamDto>> Get([FromQuery]int? id = 1)
+        {            
             return await _teamsManager.GetPageAsync(new PagedList<TeamDto>
             {
-                CurrentPage = id
+                CurrentPage = id.Value
             });
         }
 

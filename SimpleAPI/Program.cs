@@ -26,6 +26,7 @@ namespace SimpleAPI
                 }
                 catch (Exception ex)
                 {
+                    Logger.Debug(ex.Message);
                     //Looks like a pre-existing db will fail...sort of a pain
                 }
             }

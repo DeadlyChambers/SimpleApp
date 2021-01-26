@@ -31,7 +31,7 @@ add-migration "Migration Name" -Context IdentityContext
 update-database -Context IdentityContext
 
 dotnet ef database update --context FootballContext --project .\SimpleAPI.DataAccess\SimpleAPI.DataAccess.csproj --startup-project .\SimpleAPI\SimpleAPI.csproj --output-dir .\ -t teams -t players -t games -t stats --force
-dotnet ef dbContext scaffold "Host=localhost;Database=postgresNew;Username=postgres;Password=Snowboard1" --provider Npgsql.EntityFrameworkCore.PostgreSQL --context FootballContext --project .\SimpleAPI.DataAccess\SimpleAPI.DataAccess.csproj --startup-project .\SimpleAPI\SimpleAPI.csproj --output-dir .\ -t teams -t players -t games -t stats --force
+dotnet ef dbContext scaffold "Host=localhost;Database=postgresNew;Username=postgres;Password=" --provider Npgsql.EntityFrameworkCore.PostgreSQL --context FootballContext --project .\SimpleAPI.DataAccess\SimpleAPI.DataAccess.csproj --startup-project .\SimpleAPI\SimpleAPI.csproj --output-dir .\ -t teams -t players -t games -t stats --force
 dotnet ef database update --context FootballContext --project .\SimpleAPI.DataAccess\SimpleAPI.DataAccess.csproj --startup-project .\SimpleAPI\SimpleAPI.csproj 
 dotnet ef database update --context IdentityContext --project .\SimpleAPI.DataAccess\SimpleAPI.DataAccess.csproj --startup-project .\SimpleAPI\SimpleAPI.csproj 
 

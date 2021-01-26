@@ -28,7 +28,7 @@ namespace SimpleAPI.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("public");
-            modelBuilder.HasPostgresExtension("adminpack")
+            modelBuilder//.HasPostgresExtension("adminpack")
                 .HasAnnotation("Relational:Collation", "English_United States.1252");
 
             // Ensure the Postions are statically loaded, migth need to move to top

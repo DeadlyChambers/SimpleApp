@@ -11,8 +11,8 @@ namespace SimpleAPI.DataAccess.Football
             migrationBuilder.EnsureSchema(
                 name: "public");
 
-            migrationBuilder.AlterDatabase()
-                .Annotation("Npgsql:PostgresExtension:adminpack", ",,");
+            //migrationBuilder.AlterDatabase()
+            //    .Annotation("Npgsql:PostgresExtension:adminpack", ",,");
 
             migrationBuilder.CreateTable(
                 name: "players",

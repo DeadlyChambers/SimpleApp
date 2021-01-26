@@ -15,11 +15,18 @@ using SimpleAPI.DataAccess;
 using SimpleAPI.DataAccess.Configuration;
 using SimpleAPI.DTO;
 using SimpleAPI.DTO.Profiles;
+using System.Configuration;
 using System;
 using System.Linq;
+using log4net;
+using System.Xml;
+using System.Reflection;
+using System.IO;
+using log4net.Repository.Hierarchy;
 
 namespace SimpleAPI
 {
+    
     public class Startup : StartupDb
     {
         public Startup(IConfiguration configuration)
@@ -44,8 +51,7 @@ namespace SimpleAPI
             //    AddPageSpecificAuth(options);
             //});
 
-            var conn =  Environment.ExpandEnvironmentVariables(Configuration["Data:DefaultConnection"]);
-
+            var conn =  Environment.ExpandEnvironmentVariables(Configuration["Data:DefaultConnection"]);          
             services.AddControllers();
             services.AddCors(options =>
             {
@@ -65,45 +71,24 @@ namespace SimpleAPI
                 return new StartupLogger(service);
             });
             var logger = services.BuildServiceProvider().GetRequiredService<StartupLogger>();
+          
             HandleApplicationVersioning(logger);
 
-            logger.Log($"In startup the connstring is {conn}");
             ConnectionString = conn;
             _ = services.AddDbContext<FootballContext>(options =>
                 options.UseNpgsql(conn));
-
-            //_ = services.AddDbContext<IdentityContext>(options =>
-            //       options.UseNpgsql(conn));
-
-           // services.AddDatabaseDeveloperPageExceptionFilter();
-
-            //services.AddDefaultIdentity<SCCUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //   .AddEntityFrameworkStores<IdentityContext>();
-
-            //services.AddIdentityServer()
-            //    .AddApiAuthorization<SCCUser, IdentityContext>();
-
-            //services.AddAuthentication()
-            //    .AddIdentityServerJwt();
-         //   services.AddControllersWithViews();
-        //    services.AddRazorPages();
-            // In production, the Angular files will be served from this directory
-            //services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "../ClientApp/dist";
-            //});
 
             ConfigureDI(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
-              //  app.UseDeveloperExceptionPage();
+                //  app.UseDeveloperExceptionPage();
 
-             //   app.UseMigrationsEndPoint();
+                //   app.UseMigrationsEndPoint();
             }
             else
             {
@@ -118,16 +103,17 @@ namespace SimpleAPI
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
-         //       app.UseSpaStaticFiles();
+                //       app.UseSpaStaticFiles();
             }
+            loggerFactory.AddLog4Net();
 
             app.UseRouting();
 
             app.UseAuthentication();
 
-//            app.UseIdentityServer();
+            //            app.UseIdentityServer();
 
-          //  app.UseAuthorization();
+            //  app.UseAuthorization();
 
             app.UseCors("AllowOrigin");
 
@@ -136,30 +122,7 @@ namespace SimpleAPI
                 endpoints.MapControllers();
             });
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //   endpoints.MapRazorPages();
-            //    endpoints.MapControllerRoute(
-            //        name: "default",
-            //        pattern: "{controller}/{action=Index}/{id?}");
-
-            //});
-
-            //app.UseSpa(spa =>
-            //{
-            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-            //    // see https://go.microsoft.com/fwlink/?linkid=864501
-
-            //    spa.Options.SourcePath = "../ClientApp";
-
-            //    if (env.IsDevelopment())
-            //    {
-            //        //Uncomment if you want to run website and api at the same time. 
-            //      //  spa.UseAngularCliServer(npmScript: "start");
-            //    }
-            //});
         }
-
 
 
         /// <summary>
@@ -193,29 +156,7 @@ namespace SimpleAPI
                 //don't really care about this if it fails
             }
         }
-
-        /// <summary>
-        /// Set the individual page, folders, or areas to have policies enforced for Auth
-        /// </summary>
-        /// <param name="options"></param>
-        public void AddPageSpecificAuth(RazorPagesOptions options)
-        {
-            ////Admin can delete and edit
-            //options.Conventions.AuthorizePage("/Teams/Delete", SCCPolicies.Updaters);
-            //options.Conventions.AuthorizePage("/Teams/Edit", SCCPolicies.Updaters);
-            ////Trusted can create
-            //options.Conventions.AuthorizePage("/Teams/Create", SCCPolicies.Creators);
-            ////Account can view
-            //options.Conventions.AuthorizePage("/Teams/Details", SCCPolicies.Readers);
-            //Anonymous can view all indexes
-            //options.Conventions.AllowAnonymousToPage("~/Index");
-            //Execpt stats
-
-            //options.Conventions.AllowAnonymousToAreaPage("Identity", "/Account/AccessDenied");
-        }
-
-
-
+                
         /// <summary>
         /// Setup the various custom DI impleminations/interfaces
         /// </summary>
@@ -227,8 +168,6 @@ namespace SimpleAPI
             services.AddTransient<IEntitiesManager<GameDto>, BasicEntitiesManager<GameDto>>();
             services.AddTransient<IMultiEntitiesManager<StatDto>, StatsManager<StatDto>>();
         }
-
-
     }
 
     /// <summary>
@@ -248,4 +187,35 @@ namespace SimpleAPI
             _logger.LogInformation(message);
         }
     }
+    
+    public static class Logger
+    {
+
+        private static readonly string LOG_CONFIG_FILE = @"log4net.config";
+
+        private static readonly log4net.ILog _log = GetLogger(typeof(Logger));
+
+        public static ILog GetLogger(Type type)
+        {
+            return LogManager.GetLogger(type);
+        }
+
+        public static void Debug(object message)
+        {
+            SetLog4NetConfiguration();
+            _log.Debug(message);
+        }
+
+        private static void SetLog4NetConfiguration()
+        {
+            XmlDocument log4netConfig = new XmlDocument();
+            log4netConfig.Load(File.OpenRead(LOG_CONFIG_FILE));
+
+            var repo = LogManager.CreateRepository(
+                Assembly.GetEntryAssembly(), typeof(Hierarchy));
+
+            log4net.Config.XmlConfigurator.Configure(repo, log4netConfig["log4net"]);
+        }
+    }
+
 }

@@ -16,7 +16,7 @@ namespace SimpleAPI.DataAccess.Football
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("public")
-                .HasPostgresExtension("adminpack")
+                //.HasPostgresExtension("adminpack")
                 .UseIdentityByDefaultColumns()
                 .HasAnnotation("Relational:Collation", "English_United States.1252")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)

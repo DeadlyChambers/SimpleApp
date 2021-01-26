@@ -11,7 +11,7 @@ export function getBaseUrl() {
 }
 export function getApiUrl(){
    return 'https://api.soinshane.com/';
-//return 'https://localhost:44341/';
+ //return 'https://localhost:44341/';
   //return 'http://localhost:27819/';
 }
 
