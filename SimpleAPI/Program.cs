@@ -29,21 +29,21 @@ namespace SimpleAPI
                     //Looks like a pre-existing db will fail...sort of a pain
                 }
             }
-            using (var scope = host.Services.CreateScope())
-            {
-                try
-                {
-                    var db = scope.ServiceProvider.GetRequiredService<IdentityContext>();
-                    var migs = db.Database.GetPendingMigrations();
-                    if (migs.Any())
-                        db.Database.Migrate();
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    //Looks like a pre-existing db will fail...sort of a pain
-                }
-            }
+            //using (var scope = host.Services.CreateScope())
+            //{
+            //    try
+            //    {
+            //        var db = scope.ServiceProvider.GetRequiredService<IdentityContext>();
+            //        var migs = db.Database.GetPendingMigrations();
+            //        if (migs.Any())
+            //            db.Database.Migrate();
+            //        db.SaveChanges();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        //Looks like a pre-existing db will fail...sort of a pain
+            //    }
+            //}
 
             host.Run();
         }

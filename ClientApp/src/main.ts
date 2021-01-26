@@ -5,13 +5,13 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
-  //return 'https://soinshane.com/';
-  return 'http://localhost:4200/';
+  return 'https://soinshane.com/';
+  //return 'http://localhost:4200/';
  // return document.getElementsByTagName('base')[0].href;
 }
 export function getApiUrl(){
-   //return 'https://api.soinshane.com/';
-return 'https://localhost:44341/api/';
+   return 'https://api.soinshane.com/';
+//return 'https://localhost:44341/';
   //return 'http://localhost:27819/';
 }
 

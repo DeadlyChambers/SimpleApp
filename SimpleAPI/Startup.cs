@@ -72,19 +72,19 @@ namespace SimpleAPI
             _ = services.AddDbContext<FootballContext>(options =>
                 options.UseNpgsql(conn));
 
-            _ = services.AddDbContext<IdentityContext>(options =>
-                   options.UseNpgsql(conn));
+            //_ = services.AddDbContext<IdentityContext>(options =>
+            //       options.UseNpgsql(conn));
 
            // services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<SCCUser>(options => options.SignIn.RequireConfirmedAccount = true)
-               .AddEntityFrameworkStores<IdentityContext>();
+            //services.AddDefaultIdentity<SCCUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //   .AddEntityFrameworkStores<IdentityContext>();
 
-            services.AddIdentityServer()
-                .AddApiAuthorization<SCCUser, IdentityContext>();
+            //services.AddIdentityServer()
+            //    .AddApiAuthorization<SCCUser, IdentityContext>();
 
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
+            //services.AddAuthentication()
+            //    .AddIdentityServerJwt();
          //   services.AddControllersWithViews();
         //    services.AddRazorPages();
             // In production, the Angular files will be served from this directory
@@ -101,9 +101,9 @@ namespace SimpleAPI
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+              //  app.UseDeveloperExceptionPage();
 
-                app.UseMigrationsEndPoint();
+             //   app.UseMigrationsEndPoint();
             }
             else
             {
@@ -125,9 +125,9 @@ namespace SimpleAPI
 
             app.UseAuthentication();
 
-            app.UseIdentityServer();
+//            app.UseIdentityServer();
 
-            app.UseAuthorization();
+          //  app.UseAuthorization();
 
             app.UseCors("AllowOrigin");
 
@@ -211,7 +211,7 @@ namespace SimpleAPI
             //options.Conventions.AllowAnonymousToPage("~/Index");
             //Execpt stats
 
-            options.Conventions.AllowAnonymousToAreaPage("Identity", "/Account/AccessDenied");
+            //options.Conventions.AllowAnonymousToAreaPage("Identity", "/Account/AccessDenied");
         }
 
 
